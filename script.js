@@ -39,10 +39,11 @@ document.addEventListener("DOMContentLoaded", function() {
     return vencimento >= hoje ? "Ativo" : "Vencido";
   }
 
-  function calcularDiasRestantes(vencimento) {
+  function calcularDiasRestantes(dataVencimento) {
     const hoje = new Date();
-    const dataVencimento = new Date(vencimento);
-    const diffTime = dataVencimento - hoje;
+    const [dia, mes, ano] = dataVencimento.split("/");
+    const dataVencimentoFormatada = new Date(`${ano}-${mes}-${dia}`);
+    const diffTime = dataVencimentoFormatada - hoje;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   }
@@ -56,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
     listaClientes.innerHTML = "";
     clientes.sort((a, b) => new Date(a.vencimento.split("/").reverse().join("-")) - new Date(b.vencimento.split("/").reverse().join("-"))); // Ordena pela data de vencimento
     clientes.forEach((cliente, index) => {
+      cliente.diasRestantes = calcularDiasRestantes(cliente.vencimento); // Atualiza os dias restantes
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${cliente.nome}</td>
@@ -90,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const formatado = `${ano}-${mes}-${dia}`; // Formato para verificação
       clientes[index].vencimento = novoVencimento;
       clientes[index].status = verificarStatus(formatado);
-      clientes[index].diasRestantes = calcularDiasRestantes(formatado);
+      clientes[index].diasRestantes = calcularDiasRestantes(novoVencimento);
       salvarLocalStorage();
       atualizarTabela();
       atualizarResumo();
