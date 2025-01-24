@@ -4,7 +4,31 @@ document.addEventListener("DOMContentLoaded", function() {
   const ativos = document.getElementById("ativos");
   const vencidos = document.getElementById("vencidos");
   const receita = document.getElementById("receita");
+document.addEventListener("DOMContentLoaded", function () {
+  const exportarBtn = document.createElement("button");
+  exportarBtn.textContent = "Exportar Dados";
+  exportarBtn.style = "position: fixed; bottom: 20px; right: 20px; z-index: 999;";
+  document.body.appendChild(exportarBtn);
 
+  exportarBtn.addEventListener("click", () => {
+    const dados = localStorage.getItem("clientes");
+    if (dados) {
+      const blob = new Blob([dados], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "clientes.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      alert("Dados exportados com sucesso!");
+    } else {
+      alert("Nenhum dado encontrado no LocalStorage!");
+    }
+  });
+});
   let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 
   atualizarTabela();
