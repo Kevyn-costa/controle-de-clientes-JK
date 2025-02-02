@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const vencidos = document.getElementById("vencidos");
   const receita = document.getElementById("receita");
 
-  let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+  let clientes = JSON.parse(localStorage.getItem("meusClientes")) || [];
 
   atualizarTabela();
   atualizarResumo();
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const cliente = {
       nome,
-      vencimento: formatarData(vencimento),
+      vencimento,
       app,
       valor,
       status: verificarStatus(vencimento),
@@ -40,26 +40,21 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function calcularDiasRestantes(vencimento) {
-    const hoje = new Date();
-    const dataVencimento = new Date(vencimento);
+    const hoje = new Date().setHours(0, 0, 0, 0);
+    const dataVencimento = new Date(vencimento).setHours(0, 0, 0, 0);
     const diffTime = dataVencimento - hoje;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   }
 
-  function formatarData(data) {
-    const [ano, mes, dia] = data.split("-");
-    return `${dia}/${mes}/${ano}`;
-  }
-
   function atualizarTabela() {
     listaClientes.innerHTML = "";
-    clientes.sort((a, b) => new Date(a.vencimento.split("/").reverse().join("-")) - new Date(b.vencimento.split("/").reverse().join("-"))); // Ordena pela data de vencimento
+    clientes.sort((a, b) => new Date(a.vencimento) - new Date(b.vencimento)); // Ordena pela data de vencimento
     clientes.forEach((cliente, index) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${cliente.nome}</td>
-        <td>${cliente.vencimento}</td>
+        <td>${cliente.vencimento.split("-").reverse().join("/")}</td>
         <td>${cliente.app}</td>
         <td>R$ ${cliente.valor.toFixed(2)}</td>
         <td class="${cliente.status === 'Ativo' ? 'text-success' : 'text-danger'}">${cliente.status}</td>
@@ -88,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (novoVencimento) {
       const [dia, mes, ano] = novoVencimento.split("/");
       const formatado = `${ano}-${mes}-${dia}`; // Formato para verificação
-      clientes[index].vencimento = novoVencimento;
+      clientes[index].vencimento = formatado;
       clientes[index].status = verificarStatus(formatado);
       clientes[index].diasRestantes = calcularDiasRestantes(formatado);
       salvarLocalStorage();
@@ -105,6 +100,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function salvarLocalStorage() {
-    localStorage.setItem("clientes", JSON.stringify(clientes));
+    localStorage.setItem("meusClientes", JSON.stringify(jclientes));
   }
 });
