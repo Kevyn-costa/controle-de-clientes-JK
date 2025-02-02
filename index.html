@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel de Assistência Técnica</title>
+  <title>Painel de tv JK</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -11,40 +11,32 @@
   <div class="container py-5">
     <!-- Header -->
     <header>
-      <img src="img.jpeg" alt="Banner do Painel de Gestão" class="img-fluid rounded mb-4"width="700" >>
+      <img src="img.jpeg" alt="Banner do Painel de Gestão" class="img-fluid rounded mb-4">
     </header>
 
     <!-- Estatísticas -->
     <section class="row text-center mb-5">
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card shadow-sm border-0">
           <div class="card-body">
-            <h5 class="text-success">Serviços Concluídos</h5>
-            <p id="concluidos" class="display-6 fw-bold">0</p>
+            <h5 class="text-success">Clientes Ativos</h5>
+            <p id="ativos" class="display-6 fw-bold">0</p>
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card shadow-sm border-0">
           <div class="card-body">
-            <h5 class="text-danger">Serviços Pendentes</h5>
-            <p id="pendentes" class="display-6 fw-bold">0</p>
+            <h5 class="text-danger">Clientes Vencidos</h5>
+            <p id="vencidos" class="display-6 fw-bold">0</p>
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card shadow-sm border-0">
           <div class="card-body">
-            <h5 id="nomeMesAtual" class="text-warning">Receita [Mês Atual]</h5>
-            <p id="receitaMesAtual" class="display-6 fw-bold">R$ 0,00</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-          <div class="card-body">
-            <h5 class="text-info">Faturamento Anual</h5>
-            <p id="faturamentoAnual" class="display-6 fw-bold">R$ 0,00</p>
+            <h5 class="text-warning">Receita Total</h5>
+            <p id="receita" class="display-6 fw-bold">R$ 0,00</p>
           </div>
         </div>
       </div>
@@ -54,31 +46,24 @@
     <section class="mb-5">
       <div class="card shadow-sm border-0">
         <div class="card-body">
-          <h3 class="mb-4 text-center">Cadastrar Serviço</h3>
-          <form id="formServico">
+          <h3 class="mb-4 text-center">Cadastrar Cliente</h3>
+          <form id="formCliente">
             <div class="row g-3">
               <div class="col-md-6">
-                <label for="cliente" class="form-label">Cliente</label>
-                <input type="text" id="cliente" class="form-control" placeholder="Ex: João Silva" required>
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" id="nome" class="form-control" placeholder="Ex: Jão dev" required>
               </div>
               <div class="col-md-6">
-                <label for="data" class="form-label">Data</label>
-                <input type="date" id="data" class="form-control" required>
+                <label for="vencimento" class="form-label">Vencimento</label>
+                <input type="date" id="vencimento" class="form-control" required>
               </div>
               <div class="col-md-6">
-                <label for="servico" class="form-label">Serviço</label>
-                <input type="text" id="servico" class="form-control" placeholder="Ex: Troca de tela" required>
+                <label for="app" class="form-label">Plano</label>
+                <input type="text" id="app" class="form-control" placeholder="Ex: Unitv, Lazer player" required>
               </div>
               <div class="col-md-6">
                 <label for="valor" class="form-label">Valor (R$)</label>
-                <input type="number" id="valor" class="form-control" placeholder="Ex: R$ 150,00" required>
-              </div>
-              <div class="col-md-6">
-                <label for="status" class="form-label">Status</label>
-                <select id="status" class="form-control" required>
-                  <option value="Concluído">Concluído</option>
-                  <option value="Pendente">Pendente</option>
-                </select>
+                <input type="number" id="valor" class="form-control" placeholder="Ex: R$ 26,90" required>
               </div>
             </div>
             <button type="submit" class="btn btn-primary w-100 mt-4">Cadastrar</button>
@@ -87,48 +72,28 @@
       </div>
     </section>
 
-    <!-- Tabela de Serviços -->
-    <section class="mb-5">
+    <!-- Tabela de Clientes -->
+    <section>
       <div class="card shadow-sm border-0">
         <div class="card-body">
-          <h3 class="mb-4 text-center">Serviços Cadastrados</h3>
+          <h3 class="mb-4 text-center">Clientes Cadastrados</h3>
           <div class="table-responsive">
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>Cliente</th>
-                  <th>Data</th>
+                  <th>Nome</th>
+                  <th>Vencimento</th>
                   <th>Serviço</th>
                   <th>Valor (R$)</th>
                   <th>Status</th>
+                  <th>Dias Restantes</th>
                   <th>Ações</th>
                 </tr>
               </thead>
-              <tbody id="listaServicos">
+              <tbody id="listaClientes">
                 <!-- Linhas dinâmicas -->
               </tbody>
             </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Botão para fechar o mês -->
-    <section class="mb-5">
-      <div class="card shadow-sm border-0">
-        <div class="card-body text-center">
-          <button class="btn btn-success" onclick="fecharMes()">Fechar Mês</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Lista de Meses Fechados -->
-    <section class="mb-5">
-      <div class="card shadow-sm border-0">
-        <div class="card-body">
-          <h3 class="mb-4 text-center">Meses Fechados</h3>
-          <div id="listaMesesFechados" class="accordion">
-            <!-- Accordion de meses fechados será gerado aqui -->
           </div>
         </div>
       </div>
