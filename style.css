@@ -1,7 +1,7 @@
 body {
   font-family: 'Georgia', serif;
-  margin: 10;
-  padding: 10;
+  margin: 0;
+  padding: 0;
   background-color: #f3f1f5;
   color: #4a4a4a;
 }
@@ -12,7 +12,7 @@ header {
   padding: 10px;
   text-align: center;
   margin-bottom: 20px;
-  border-radius: 5px  #f01a1a;
+  border-radius: 5px;
 }
 
 .container {
@@ -26,7 +26,7 @@ header {
 
 .card {
   margin-bottom: 20px;
-  border-radius: 60px;
+  border-radius: 10px;
 }
 
 .card-title {
