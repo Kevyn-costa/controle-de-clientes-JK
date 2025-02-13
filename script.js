@@ -56,7 +56,34 @@ document.addEventListener("DOMContentLoaded", function() {
     const dataVencimento = moment(vencimento, "DD/MM/YYYY");
     return dataVencimento.diff(hoje, "days");
   }
+function atualizarDataHora() {
+  const elementoDataHora = document.getElementById("dataHora");
+  const agora = new Date();
 
+  // Formatar a data e a hora
+  const options = { 
+    weekday: 'long', // Dia da semana (ex: "segunda-feira")
+    year: 'numeric', // Ano (ex: "2023")
+    month: 'long',   // Mês (ex: "outubro")
+    day: 'numeric',  // Dia do mês (ex: "23")
+    hour: '2-digit', // Hora (ex: "14")
+    minute: '2-digit', // Minuto (ex: "05")
+    second: '2-digit', // Segundo (ex: "09")
+    hour12: false // Usar formato 24 horas
+  };
+
+  // Formatar a data e a hora no padrão brasileiro
+  const dataHoraFormatada = agora.toLocaleDateString('pt-BR', options);
+
+  // Atualizar o conteúdo do elemento
+  elementoDataHora.textContent = dataHoraFormatada;
+}
+
+// Atualizar a cada segundo
+setInterval(atualizarDataHora, 1000);
+
+// Chamar a função uma vez para exibir imediatamente
+atualizarDataHora();
   function formatarData(data) {
     return moment(data).format("DD/MM/YYYY");
   }
