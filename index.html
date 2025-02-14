@@ -4,24 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel de TV JK</title>
+  <meta name="description" content="Painel de Gestão de Clientes da TV JK">
+  <meta name="keywords" content="gestão, clientes, TV JK, painel">
+  <meta name="author" content="Sua Empresa">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid justify-content-center">
+      <a class="navbar-brand" href="#">Painel de TV JK</a>
+    </div>
+  </nav>
+
   <div class="container py-5">
-    <!-- Header -->
+  
     <header>
-      <img src="img.jpeg" alt="Banner do Painel de Gestão" class="img-fluid rounded mb-4">
+      <div class="d-flex justify-content-between align-items-center">
+        
+        <img src="img.jpeg" alt="Banner do Painel de Gestão" class="img-fluid rounded mb-4">
+     
+      </div>
     </header>
-<header>
-  <div class="d-flex justify-content-between align-items-center">
-    <img src="img.jpeg" alt="Banner do Painel de Gestão" class="img-fluid rounded mb-4">
-    <div id="dataHora" class="text-end text-muted"></div>
-  </div>
-</header>
-    <!-- Estatísticas -->
-    <section class="row text-center mb-5">
+
+   <div id="dataHora" class="text-center text-muted"></div>
+
+    <section id="estatisticas" class="row text-center mb-5">
       <div class="col-md-4">
         <div class="card shadow-sm border-0">
           <div class="card-body">
@@ -48,8 +59,7 @@
       </div>
     </section>
 
-    <!-- Formulário -->
-    <section class="mb-5">
+    <section id="cadastro" class="mb-5">
       <div class="card shadow-sm border-0">
         <div class="card-body">
           <h3 class="mb-4 text-center">Cadastrar Cliente</h3>
@@ -79,7 +89,7 @@
     </section>
 
     <!-- Tabela de Clientes -->
-    <section>
+    <section id="clientes">
       <div class="card shadow-sm border-0">
         <div class="card-body">
           <h3 class="mb-4 text-center">Clientes Cadastrados</h3>
