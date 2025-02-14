@@ -1,14 +1,24 @@
+:root {
+  --cor-primaria: rgb(0, 123, 255); /* Azul */
+  --cor-secundaria: rgb(108, 117, 125); /* Cinza */
+  --cor-sucesso: rgb(40, 167, 69); /* Verde */
+  --cor-perigo: rgb(220, 53, 69); /* Vermelho */
+  --cor-aviso: rgb(255, 193, 7); /* Amarelo */
+  --cor-fundo: rgb(243, 241, 245); /* Fundo claro */
+  --cor-texto: rgb(74, 74, 74); /* Texto escuro */
+}
+
 body {
   font-family: 'Georgia', serif;
   margin: 0;
   padding: 0;
-  background-color: #f3f1f5;
-  color: #4a4a4a;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
 }
 
 header {
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
+  background-color: white;
+  color: black;
   padding: 10px;
   text-align: center;
   margin-bottom: 20px;
@@ -34,28 +44,26 @@ header {
   font-weight: 700;
 }
 
-.form-group label {
-  font-weight: bold;
-}
 #dataHora {
   font-size: 1.2em;
   font-weight: bold;
-  color: #333;
+  color: var(--cor-texto);
   background-color: rgba(255, 255, 255, 0.8);
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .btn {
   transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-  background-color: #0056b3;
+  background-color: var(--cor-primaria);
 }
 
 .table th {
-  background-color: #007bff;
+  background-color: var(--cor-primaria);
   color: white;
 }
 
@@ -64,5 +72,5 @@ header {
 }
 
 .text-warning {
-  color: #ffc107 !important;
+  color: var(--cor-aviso) !important;
 }
