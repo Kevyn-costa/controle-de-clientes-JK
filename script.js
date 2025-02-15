@@ -123,36 +123,36 @@ document.addEventListener("DOMContentLoaded", function () {
     receita.textContent = `R$ ${totalReceita.toFixed(2)}`;
   }
 
-window.renovarCliente = function (index) {
-  Swal.fire({
-    title: "Renovar Cliente",
-    input: "text",
-    inputLabel: "Nova data de vencimento (DD/MM/YYYY)",
-    inputPlaceholder: "Ex: 31/12/2023",
-    showCancelButton: true,
-    confirmButtonText: "Renovar",
-    cancelButtonText: "Cancelar",
-    inputValidator: (value) => {
-      if (!value || !moment(value, "DD/MM/YYYY", true).isValid()) {
-        return "Digite uma data válida no formato DD/MM/YYYY!";
+  window.renovarCliente = function (index) {
+    Swal.fire({
+      title: "Renovar Cliente",
+      input: "text",
+      inputLabel: "Nova data de vencimento (DD/MM/YYYY)",
+      inputPlaceholder: "Ex: 31/12/2023",
+      showCancelButton: true,
+      confirmButtonText: "Renovar",
+      cancelButtonText: "Cancelar",
+      inputValidator: (value) => {
+        if (!value || !moment(value, "DD/MM/YYYY", true).isValid()) {
+          return "Digite uma data válida no formato DD/MM/YYYY!";
+        }
+        if (moment(value, "DD/MM/YYYY").isBefore(moment(), "day")) {
+          return "A data de vencimento deve ser futura!";
+        }
       }
-      if (moment(value, "DD/MM/YYYY").isBefore(moment(), "day")) {
-        return "A data de vencimento deve ser futura!";
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const novaData = result.value;
+        clientes[index].vencimento = novaData;
+        clientes[index].diasRestantes = calcularDiasRestantes(novaData);
+        clientes[index].status = verificarStatus(novaData); // Atualiza o status
+        salvarLocalStorage();
+        atualizarTabela();
+        atualizarResumo();
+        Swal.fire("Sucesso", "Cliente renovado com sucesso!", "success");
       }
-    }
-  }).then((result) => {
-    if (result.isConfirmed) {
-      const novaData = result.value;
-      clientes[index].vencimento = novaData;
-      clientes[index].diasRestantes = calcularDiasRestantes(novaData);
-      clientes[index].status = verificarStatus(novaData); // Atualiza o status
-      salvarLocalStorage();
-      atualizarTabela();
-      atualizarResumo();
-      Swal.fire("Sucesso", "Cliente renovado com sucesso!", "success");
-    }
-  });
-};
+    });
+  }
 
   window.removerCliente = function (index) {
     Swal.fire({
