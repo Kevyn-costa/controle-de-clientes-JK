@@ -8,6 +8,7 @@
   <meta name="keywords" content="gestão, clientes, TV JK, painel">
   <meta name="author" content="Sua Empresa">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -16,43 +17,40 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid justify-content-center">
-      <a class="navbar-brand" href="#">Painel de TV JK</a>
+      <a class="navbar-brand" href="#"><i class="fas fa-tv me-2"></i>Painel de TV JK</a>
     </div>
   </nav>
 
   <div class="container py-5">
-  
     <header>
       <div class="d-flex justify-content-between align-items-center">
-        
         <img src="img.jpeg" alt="Banner do Painel de Gestão" class="img-fluid rounded mb-4">
-     
       </div>
     </header>
 
-   <div id="dataHora" class="text-center text-muted"></div>
+    <div id="dataHora" class="text-center text-muted mb-4"></div>
 
     <section id="estatisticas" class="row text-center mb-5">
-      <div class="col-md-4">
-        <div class="card shadow-sm border-0">
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm border-0 h-100">
           <div class="card-body">
-            <h5 class="text-success">Clientes Ativos</h5>
+            <h5 class="text-success"><i class="fas fa-user-check me-2"></i>Clientes Ativos</h5>
             <p id="ativos" class="display-6 fw-bold">0</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card shadow-sm border-0">
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm border-0 h-100">
           <div class="card-body">
-            <h5 class="text-danger">Clientes Vencidos</h5>
+            <h5 class="text-danger"><i class="fas fa-user-times me-2"></i>Clientes Vencidos</h5>
             <p id="vencidos" class="display-6 fw-bold">0</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card shadow-sm border-0">
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm border-0 h-100">
           <div class="card-body">
-            <h5 class="text-warning">Receita Total</h5>
+            <h5 class="text-warning"><i class="fas fa-dollar-sign me-2"></i>Receita Total</h5>
             <p id="receita" class="display-6 fw-bold">R$ 0,00</p>
           </div>
         </div>
@@ -62,12 +60,12 @@
     <section id="cadastro" class="mb-5">
       <div class="card shadow-sm border-0">
         <div class="card-body">
-          <h3 class="mb-4 text-center">Cadastrar Cliente</h3>
+          <h3 class="mb-4 text-center"><i class="fas fa-user-plus me-2"></i>Cadastrar Cliente</h3>
           <form id="formCliente">
             <div class="row g-3">
               <div class="col-md-6">
                 <label for="nome" class="form-label">Nome</label>
-                <input type="text" id="nome" class="form-control" placeholder="Ex: João Dev" required>
+                <input type="text" id="nome" class="form-control" placeholder="Digite o nome completo" required>
               </div>
               <div class="col-md-6">
                 <label for="vencimento" class="form-label">Vencimento</label>
@@ -79,20 +77,19 @@
               </div>
               <div class="col-md-6">
                 <label for="valor" class="form-label">Valor (R$)</label>
-                <input type="number" id="valor" class="form-control" placeholder="Ex: R$ 26,90" required>
+                <input type="number" id="valor" class="form-control" placeholder="Ex: 26.90" step="0.01" required>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary w-100 mt-4">Cadastrar</button>
+            <button type="submit" class="btn btn-primary w-100 mt-4"><i class="fas fa-save me-2"></i>Cadastrar</button>
           </form>
         </div>
       </div>
     </section>
 
-    <!-- Tabela de Clientes -->
     <section id="clientes">
       <div class="card shadow-sm border-0">
         <div class="card-body">
-          <h3 class="mb-4 text-center">Clientes Cadastrados</h3>
+          <h3 class="mb-4 text-center"><i class="fas fa-users me-2"></i>Clientes Cadastrados</h3>
           <div class="table-responsive">
             <table class="table table-hover">
               <thead>
