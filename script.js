@@ -34,6 +34,12 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    const hoje = moment().format("YYYY-MM-DD");
+    if (moment(vencimento).isBefore(hoje)) {
+      Swal.fire("Erro", "A data de vencimento deve ser futura!", "error");
+      return;
+    }
+
     const cliente = {
       nome,
       vencimento: formatarData(vencimento),
