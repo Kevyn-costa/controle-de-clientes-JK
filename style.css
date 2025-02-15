@@ -1,11 +1,11 @@
 :root {
-  --cor-primaria: rgb(0, 123, 255); /* Azul */
-  --cor-secundaria: rgb(108, 117, 125); /* Cinza */
-  --cor-sucesso: rgb(40, 167, 69); /* Verde */
-  --cor-perigo: rgb(220, 53, 69); /* Vermelho */
-  --cor-aviso: rgb(255, 193, 7); /* Amarelo */
-  --cor-fundo: rgb(243, 241, 245); /* Fundo claro */
-  --cor-texto: rgb(74, 74, 74); /* Texto escuro */
+  --cor-primaria: #007bff; /* Azul */
+  --cor-secundaria: #6c757d; /* Cinza */
+  --cor-sucesso: #28a745; /* Verde */
+  --cor-perigo: #dc3545; /* Vermelho */
+  --cor-aviso: #ffc107; /* Amarelo */
+  --cor-fundo: #f8f9fa; /* Fundo claro */
+  --cor-texto: #495057; /* Texto escuro */
 }
 
 body {
@@ -37,11 +37,11 @@ header {
 .card {
   margin-bottom: 20px;
   border-radius: 10px;
+  transition: transform 0.3s ease;
 }
 
-.card-title {
-  margin-bottom: 20px;
-  font-weight: 700;
+.card:hover {
+  transform: translateY(-5px);
 }
 
 #dataHora {
@@ -73,4 +73,18 @@ header {
 
 .text-warning {
   color: var(--cor-aviso) !important;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .card {
+    margin-bottom: 10px;
+  }
+
+  #dataHora {
+    font-size: 1em;
+  }
 }
