@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("formCliente");
   const listaClientes = document.getElementById("listaClientes");
   const ativos = document.getElementById("ativos");
@@ -24,10 +24,15 @@ document.addEventListener("DOMContentLoaded", function() {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const nome = document.getElementById("nome").value;
+    const nome = document.getElementById("nome").value.trim();
     const vencimento = document.getElementById("vencimento").value;
-    const app = document.getElementById("app").value;
+    const app = document.getElementById("app").value.trim();
     const valor = parseFloat(document.getElementById("valor").value);
+
+    if (!nome || !vencimento || !app || isNaN(valor)) {
+      Swal.fire("Erro", "Preencha todos os campos corretamente!", "error");
+      return;
+    }
 
     const cliente = {
       nome,
@@ -43,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
     atualizarTabela();
     atualizarResumo();
     form.reset();
-    alert("Cliente cadastrado com sucesso!");
+    Swal.fire("Sucesso", "Cliente cadastrado com sucesso!", "success");
   });
 
   function verificarStatus(vencimento) {
@@ -56,36 +61,34 @@ document.addEventListener("DOMContentLoaded", function() {
     const dataVencimento = moment(vencimento, "DD/MM/YYYY");
     return dataVencimento.diff(hoje, "days");
   }
-function atualizarDataHora() {
-  const elementoDataHora = document.getElementById("dataHora");
-  const agora = new Date();
-  // Formatar a data e a hora
-  const options = { 
-    weekday: 'long', // Dia da semana (ex: "segunda-feira")
-    year: 'numeric', // Ano (ex: "2023")
-    month: 'long',   // Mês (ex: "outubro")
-    day: 'numeric',  // Dia do mês (ex: "23")
-    hour: '2-digit', // Hora (ex: "14")
-    minute: '2-digit', // Minuto (ex: "05")
-    second: '2-digit', // Segundo (ex: "09")
-    hour12: false // Usar formato 24 horas
-  };
-  // Formatar a data e a hora no padrão brasileiro
-  const dataHoraFormatada = agora.toLocaleDateString('pt-BR', options);
-  // Atualizar o conteúdo do elemento
-  elementoDataHora.textContent = dataHoraFormatada;
-}
-// Atualizar a cada segundo
-setInterval(atualizarDataHora, 1000);
-// Chamar a função uma vez para exibir imediatamente
-atualizarDataHora();
+
+  function atualizarDataHora() {
+    const elementoDataHora = document.getElementById("dataHora");
+    const agora = new Date();
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    };
+    const dataHoraFormatada = agora.toLocaleDateString('pt-BR', options);
+    elementoDataHora.textContent = dataHoraFormatada;
+  }
+
+  setInterval(atualizarDataHora, 1000);
+  atualizarDataHora();
+
   function formatarData(data) {
     return moment(data).format("DD/MM/YYYY");
   }
 
   function atualizarTabela() {
     listaClientes.innerHTML = "";
-    clientes.sort((a, b) => moment(a.vencimento, "DD/MM/YYYY") - moment(b.vencimento, "DD/MM/YYYY")); // Ordena pela data de vencimento
+    clientes.sort((a, b) => moment(a.vencimento, "DD/MM/YYYY") - moment(b.vencimento, "DD/MM/YYYY"));
     clientes.forEach((cliente, index) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -96,8 +99,8 @@ atualizarDataHora();
         <td class="${cliente.status === 'Ativo' ? 'text-success' : 'text-danger'}">${cliente.status}</td>
         <td>${cliente.diasRestantes}</td>
         <td>
-          <button class="btn btn-warning btn-sm" onclick="renovarCliente(${index})">Renovar</button>
-          <button class="btn btn-danger btn-sm" onclick="removerCliente(${index})">Excluir</button>
+          <button class="btn btn-warning btn-sm" onclick="renovarCliente(${index})"><i class="fas fa-sync-alt"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="removerCliente(${index})"><i class="fas fa-trash"></i></button>
         </td>
       `;
       listaClientes.appendChild(tr);
@@ -114,35 +117,54 @@ atualizarDataHora();
     receita.textContent = `R$ ${totalReceita.toFixed(2)}`;
   }
 
-  window.renovarCliente = function(index) {
-    const novoVencimento = prompt("Digite a nova data de vencimento (DD/MM/YYYY):");
-    if (novoVencimento && moment(novoVencimento, "DD/MM/YYYY", true).isValid()) {
-      clientes[index].vencimento = novoVencimento;
-      clientes[index].status = verificarStatus(novoVencimento);
-      clientes[index].diasRestantes = calcularDiasRestantes(novoVencimento);
-      salvarLocalStorage();
-      atualizarTabela();
-      atualizarResumo();
-      alert("Cliente renovado com sucesso!");
-    } else {
-      alert("Data inválida! Use o formato DD/MM/YYYY.");
-    }
+  window.renovarCliente = function (index) {
+    Swal.fire({
+      title: "Renovar Cliente",
+      input: "text",
+      inputLabel: "Nova data de vencimento (DD/MM/YYYY)",
+      inputPlaceholder: "Ex: 31/12/2023",
+      showCancelButton: true,
+      confirmButtonText: "Renovar",
+      cancelButtonText: "Cancelar",
+      inputValidator: (value) => {
+        if (!value || !moment(value, "DD/MM/YYYY", true).isValid()) {
+          return "Digite uma data válida no formato DD/MM/YYYY!";
+        }
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        clientes[index].vencimento = result.value;
+        clientes[index].status = verificarStatus(result.value);
+        clientes[index].diasRestantes = calcularDiasRestantes(result.value);
+        salvarLocalStorage();
+        atualizarTabela();
+        atualizarResumo();
+        Swal.fire("Sucesso", "Cliente renovado com sucesso!", "success");
+      }
+    });
   }
 
-  window.removerCliente = function(index) {
-    if (confirm("Tem certeza que deseja excluir este cliente?")) {
-      clientes.splice(index, 1);
-      salvarLocalStorage();
-      atualizarTabela();
-      atualizarResumo();
-      alert("Cliente excluído com sucesso!");
-    }
+  window.removerCliente = function (index) {
+    Swal.fire({
+      title: "Tem certeza?",
+      text: "Essa ação não pode ser desfeita!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Excluir",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        clientes.splice(index, 1);
+        salvarLocalStorage();
+        atualizarTabela();
+        atualizarResumo();
+        Swal.fire("Sucesso", "Cliente excluído com sucesso!", "success");
+      }
+    });
   }
 
-  function salvarLocalStorage() {
-    localStorage.setItem("clientes", JSON.stringify(clientes));
-  }
-});
   function salvarLocalStorage() {
     localStorage.setItem("clientes", JSON.stringify(clientes));
   }
