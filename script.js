@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
   const form = document.getElementById("formCliente");
   const listaClientes = document.getElementById("listaClientes");
   const ativos = document.getElementById("ativos");
@@ -9,17 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   atualizarTabela();
   atualizarResumo();
-
-  // Atualizar dias restantes e status diariamente
-  setInterval(() => {
-    clientes.forEach((cliente) => {
-      cliente.diasRestantes = calcularDiasRestantes(cliente.vencimento);
-      cliente.status = verificarStatus(cliente.vencimento);
-    });
-    salvarLocalStorage();
-    atualizarTabela();
-    atualizarResumo();
-  }, 86400000); // 24 horas
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -43,27 +32,29 @@ document.addEventListener("DOMContentLoaded", function () {
     atualizarTabela();
     atualizarResumo();
     form.reset();
-    Swal.fire("Sucesso!", "Cliente cadastrado com sucesso.", "success");
   });
 
   function verificarStatus(vencimento) {
-    const hoje = moment().format("DD/MM/YYYY");
-    return moment(vencimento, "DD/MM/YYYY").isSameOrAfter(hoje) ? "Ativo" : "Vencido";
+    const hoje = new Date().toISOString().split("T")[0];
+    return vencimento >= hoje ? "Ativo" : "Vencido";
   }
 
   function calcularDiasRestantes(vencimento) {
-    const hoje = moment();
-    const dataVencimento = moment(vencimento, "DD/MM/YYYY");
-    return dataVencimento.diff(hoje, "days");
+    const hoje = new Date();
+    const dataVencimento = new Date(vencimento);
+    const diffTime = dataVencimento - hoje;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
   }
 
   function formatarData(data) {
-    return moment(data).format("DD/MM/YYYY");
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}/${mes}/${ano}`;
   }
 
   function atualizarTabela() {
     listaClientes.innerHTML = "";
-    clientes.sort((a, b) => moment(a.vencimento, "DD/MM/YYYY") - moment(b.vencimento, "DD/MM/YYYY"));
+    clientes.sort((a, b) => new Date(a.vencimento.split("/").reverse().join("-")) - new Date(b.vencimento.split("/").reverse().join("-"))); // Ordena pela data de vencimento
     clientes.forEach((cliente, index) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -92,65 +83,26 @@ document.addEventListener("DOMContentLoaded", function () {
     receita.textContent = `R$ ${totalReceita.toFixed(2)}`;
   }
 
-  window.renovarCliente = function (index) {
+  window.renovarCliente = function(index) {
     const novoVencimento = prompt("Digite a nova data de vencimento (DD/MM/YYYY):");
-    if (novoVencimento && moment(novoVencimento, "DD/MM/YYYY", true).isValid()) {
+    if (novoVencimento) {
+      const [dia, mes, ano] = novoVencimento.split("/");
+      const formatado = `${ano}-${mes}-${dia}`; // Formato para verificação
       clientes[index].vencimento = novoVencimento;
-      clientes[index].status = verificarStatus(novoVencimento);
-      clientes[index].diasRestantes = calcularDiasRestantes(novoVencimento);
+      clientes[index].status = verificarStatus(formatado);
+      clientes[index].diasRestantes = calcularDiasRestantes(formatado);
       salvarLocalStorage();
       atualizarTabela();
       atualizarResumo();
-      Swal.fire("Sucesso!", "Cliente renovado com sucesso.", "success");
-    } else {
-      Swal.fire("Erro!", "Data inválida! Use o formato DD/MM/YYYY.", "error");
     }
-  };
-
-  window.removerCliente = function (index) {
-    Swal.fire({
-      title: "Tem certeza?",
-      text: "Você não poderá reverter isso!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sim, excluir!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        clientes.splice(index, 1);
-        salvarLocalStorage();
-        atualizarTabela();
-        atualizarResumo();
-        Swal.fire("Excluído!", "O cliente foi removido.", "success");
-      }
-    });
-  };
-
-  function salvarLocalStorage() {
-    localStorage.setItem("clientes", JSON.stringify(clientes));
   }
 
-  function atualizarDataHora() {
-    const elementoDataHora = document.getElementById("dataHora");
-    const agora = new Date();
-    const dataFormatada = agora.toLocaleDateString("pt-BR", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    const horaFormatada = agora.toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-    elementoDataHora.innerHTML = `${dataFormatada} - ${horaFormatada}`;
+  window.removerCliente = function(index) {
+    clientes.splice(index, 1);
+    salvarLocalStorage();
+    atualizarTabela();
+    atualizarResumo();
   }
-
-  setInterval(atualizarDataHora, 1000);
-  atualizarDataHora();
-});
 
   function salvarLocalStorage() {
     localStorage.setItem("clientes", JSON.stringify(clientes));
