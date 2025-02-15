@@ -78,6 +78,7 @@ header {
 @media (max-width: 768px) {
   .container {
     padding: 10px;
+    margin: 10px auto;
   }
 
   .card {
@@ -86,5 +87,32 @@ header {
 
   #dataHora {
     font-size: 1em;
+    padding: 8px;
+  }
+
+  .navbar-brand {
+    font-size: 1.2em;
+  }
+
+  .display-6 {
+    font-size: 1.5em;
+  }
+
+  .btn-sm {
+    padding: 5px 10px;
+    font-size: 0.9em;
+  }
+
+  .table th, .table td {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+
+  .form-control {
+    font-size: 0.9em;
+  }
+
+  .btn {
+    font-size: 0.9em;
   }
 }
