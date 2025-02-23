@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     salvarLocalStorage();
     atualizarTabela();
     atualizarResumo();
-  }, 86400000); // 24 horas
+  }, 3600000); // 1 hora
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -29,13 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const app = document.getElementById("app").value.trim();
     const valor = parseFloat(document.getElementById("valor").value);
 
-    if (!nome || !vencimento || !app || isNaN(valor)) {
+    if (!nome || !vencimento || !app || isNaN(valor) || valor < 0) {
       Swal.fire("Erro", "Preencha todos os campos corretamente!", "error");
       return;
     }
 
-    const hoje = moment().format("YYYY-MM-DD");
-    if (moment(vencimento).isBefore(hoje)) {
+    const hoje = new Date().toISOString().split('T')[0];
+    if (new Date(vencimento) < new Date(hoje)) {
       Swal.fire("Erro", "A data de vencimento deve ser futura!", "error");
       return;
     }
@@ -58,14 +58,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function verificarStatus(vencimento) {
-    const hoje = moment().format("YYYY-MM-DD");
-    return moment(vencimento).isSameOrAfter(hoje) ? "Ativo" : "Vencido";
+    const hoje = new Date().toISOString().split('T')[0];
+    return new Date(vencimento) >= new Date(hoje) ? "Ativo" : "Vencido";
   }
 
   function calcularDiasRestantes(vencimento) {
-    const hoje = moment();
-    const dataVencimento = moment(vencimento, "DD/MM/YYYY");
-    return dataVencimento.diff(hoje, "days");
+    const hoje = new Date();
+    const dataVencimento = new Date(vencimento);
+    const diffTime = dataVencimento - hoje;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
 
   function atualizarDataHora() {
@@ -89,12 +90,13 @@ document.addEventListener("DOMContentLoaded", function () {
   atualizarDataHora();
 
   function formatarData(data) {
-    return moment(data).format("DD/MM/YYYY");
+    const date = new Date(data);
+    return date.toLocaleDateString('pt-BR');
   }
 
   function atualizarTabela() {
     listaClientes.innerHTML = "";
-    clientes.sort((a, b) => moment(a.vencimento, "DD/MM/YYYY") - moment(b.vencimento, "DD/MM/YYYY"));
+    clientes.sort((a, b) => new Date(a.vencimento) - new Date(b.vencimento));
     clientes.forEach((cliente, index) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -133,10 +135,10 @@ document.addEventListener("DOMContentLoaded", function () {
       confirmButtonText: "Renovar",
       cancelButtonText: "Cancelar",
       inputValidator: (value) => {
-        if (!value || !moment(value, "DD/MM/YYYY", true).isValid()) {
+        if (!value || !/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
           return "Digite uma data válida no formato DD/MM/YYYY!";
         }
-        if (moment(value, "DD/MM/YYYY").isBefore(moment(), "day")) {
+        if (new Date(value.split('/').reverse().join('-')) < new Date()) {
           return "A data de vencimento deve ser futura!";
         }
       }
