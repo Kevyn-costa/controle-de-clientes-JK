@@ -7,10 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 
+  // Função para atualizar a tabela e o resumo ao carregar a página
   atualizarTabela();
   atualizarResumo();
 
-  // Atualizar dias restantes e status diariamente
+  // Atualizar dias restantes e status a cada 1 hora
   setInterval(() => {
     clientes.forEach(cliente => {
       cliente.diasRestantes = calcularDiasRestantes(cliente.vencimento);
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
     atualizarResumo();
   }, 3600000); // 1 hora
 
+  // Adicionar evento de submit ao formulário
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -29,17 +31,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const app = document.getElementById("app").value.trim();
     const valor = parseFloat(document.getElementById("valor").value);
 
+    // Validação dos campos
     if (!nome || !vencimento || !app || isNaN(valor) || valor < 0) {
       Swal.fire("Erro", "Preencha todos os campos corretamente!", "error");
       return;
     }
 
-    const hoje = new Date().toISOString().split('T')[0];
+    // Verificar se a data de vencimento é futura
+    const hoje = new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
     if (new Date(vencimento) < new Date(hoje)) {
       Swal.fire("Erro", "A data de vencimento deve ser futura!", "error");
       return;
     }
 
+    // Criar objeto do cliente
     const cliente = {
       nome,
       vencimento: formatarData(vencimento),
@@ -49,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
       diasRestantes: calcularDiasRestantes(vencimento),
     };
 
+    // Adicionar cliente à lista e salvar no localStorage
     clientes.push(cliente);
     salvarLocalStorage();
     atualizarTabela();
@@ -57,46 +63,37 @@ document.addEventListener("DOMContentLoaded", function () {
     Swal.fire("Sucesso", "Cliente cadastrado com sucesso!", "success");
   });
 
+  // Função para verificar o status do cliente (Ativo ou Vencido)
   function verificarStatus(vencimento) {
-    const hoje = new Date().toISOString().split('T')[0];
+    const hoje = new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
     return new Date(vencimento) >= new Date(hoje) ? "Ativo" : "Vencido";
   }
 
+  // Função para calcular os dias restantes até o vencimento
   function calcularDiasRestantes(vencimento) {
     const hoje = new Date();
     const dataVencimento = new Date(vencimento);
     const diffTime = dataVencimento - hoje;
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Converter para dias
   }
 
-  function atualizarDataHora() {
-    const elementoDataHora = document.getElementById("dataHora");
-    const agora = new Date();
-    const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    };
-    const dataHoraFormatada = agora.toLocaleDateString('pt-BR', options);
-    elementoDataHora.textContent = dataHoraFormatada;
-  }
-
-  setInterval(atualizarDataHora, 1000);
-  atualizarDataHora();
-
+  // Função para formatar a data no formato DD/MM/YYYY
   function formatarData(data) {
     const date = new Date(data);
-    return date.toLocaleDateString('pt-BR');
+    const dia = String(date.getDate()).padStart(2, "0");
+    const mes = String(date.getMonth() + 1).padStart(2, "0");
+    const ano = date.getFullYear();
+    return `${dia}/${mes}/${ano}`;
   }
 
+  // Função para atualizar a tabela de clientes
   function atualizarTabela() {
-    listaClientes.innerHTML = "";
+    listaClientes.innerHTML = ""; // Limpar a tabela antes de atualizar
+
+    // Ordenar clientes por data de vencimento
     clientes.sort((a, b) => new Date(a.vencimento) - new Date(b.vencimento));
+
+    // Adicionar cada cliente à tabela
     clientes.forEach((cliente, index) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -115,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Função para atualizar o resumo (ativos, vencidos e receita)
   function atualizarResumo() {
     const totalAtivos = clientes.filter((c) => c.status === "Ativo").length;
     const totalVencidos = clientes.filter((c) => c.status === "Vencido").length;
@@ -125,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
     receita.textContent = `R$ ${totalReceita.toFixed(2)}`;
   }
 
+  // Função para renovar um cliente
   window.renovarCliente = function (index) {
     Swal.fire({
       title: "Renovar Cliente",
@@ -147,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const novaData = result.value;
         clientes[index].vencimento = novaData;
         clientes[index].diasRestantes = calcularDiasRestantes(novaData);
-        clientes[index].status = verificarStatus(novaData); // Atualiza o status
+        clientes[index].status = verificarStatus(novaData);
         salvarLocalStorage();
         atualizarTabela();
         atualizarResumo();
@@ -156,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Função para remover um cliente
   window.removerCliente = function (index) {
     Swal.fire({
       title: "Tem certeza?",
@@ -177,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Função para salvar os clientes no localStorage
   function salvarLocalStorage() {
     localStorage.setItem("clientes", JSON.stringify(clientes));
   }
