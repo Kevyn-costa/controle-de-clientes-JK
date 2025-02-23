@@ -6,7 +6,7 @@
   <title>Painel de TV JK</title>
   <meta name="description" content="Painel de Gestão de Clientes da TV JK">
   <meta name="keywords" content="gestão, clientes, TV JK, painel">
-  <meta name="author" content="Sua Empresa">
+  <meta name="author" content="TV JK">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
@@ -14,17 +14,21 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid justify-content-center">
-      <a class="navbar-brand" href="#"><i class="fas fa-tv me-2"></i>Painel de TV JK</a>
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-tv me-2"></i>Painel de TV JK
+      </a>
     </div>
   </nav>
 
   <div class="container py-3">
     <header>
       <div class="d-flex justify-content-between align-items-center">
-        <img src="img.jpeg" alt="Banner do Painel de Gestão" class="img-fluid rounded mb-3">
+        <img src=img.jpeg
+             alt="Banner do Painel de Gestão" 
+             class="img-fluid rounded mb-3 w-100"
+             style="max-height: 200px; object-fit: cover;">
       </div>
     </header>
 
@@ -34,7 +38,9 @@
       <div class="col-md-4 mb-3">
         <div class="card shadow-sm border-0 h-100">
           <div class="card-body">
-            <h5 class="text-success"><i class="fas fa-user-check me-2"></i>Clientes Ativos</h5>
+            <h5 class="text-success">
+              <i class="fas fa-user-check me-2"></i>Clientes Ativos
+            </h5>
             <p id="ativos" class="display-6 fw-bold">0</p>
           </div>
         </div>
@@ -42,7 +48,9 @@
       <div class="col-md-4 mb-3">
         <div class="card shadow-sm border-0 h-100">
           <div class="card-body">
-            <h5 class="text-danger"><i class="fas fa-user-times me-2"></i>Clientes Vencidos</h5>
+            <h5 class="text-danger">
+              <i class="fas fa-user-times me-2"></i>Clientes Vencidos
+            </h5>
             <p id="vencidos" class="display-6 fw-bold">0</p>
           </div>
         </div>
@@ -50,7 +58,9 @@
       <div class="col-md-4 mb-3">
         <div class="card shadow-sm border-0 h-100">
           <div class="card-body">
-            <h5 class="text-warning"><i class="fas fa-dollar-sign me-2"></i>Receita Total</h5>
+            <h5 class="text-warning">
+              <i class="fas fa-dollar-sign me-2"></i>Receita Total
+            </h5>
             <p id="receita" class="display-6 fw-bold">R$ 0,00</p>
           </div>
         </div>
@@ -60,27 +70,43 @@
     <section id="cadastro" class="mb-4">
       <div class="card shadow-sm border-0">
         <div class="card-body">
-          <h3 class="mb-3 text-center"><i class="fas fa-user-plus me-2"></i>Cadastrar Cliente</h3>
-          <form id="formCliente">
+          <h3 class="mb-3 text-center">
+            <i class="fas fa-user-plus me-2"></i>Cadastrar Cliente
+          </h3>
+          <form id="formCliente" class="needs-validation" novalidate>
             <div class="row g-3">
-              <div class="col-12">
+              <div class="col-md-6">
                 <label for="nome" class="form-label">Nome</label>
                 <input type="text" id="nome" class="form-control" placeholder="Digite o nome completo" required>
+                <div class="invalid-feedback">
+                  Por favor, informe o nome do cliente.
+                </div>
               </div>
-              <div class="col-12">
+              <div class="col-md-6">
                 <label for="vencimento" class="form-label">Vencimento</label>
                 <input type="date" id="vencimento" class="form-control" required>
+                <div class="invalid-feedback">
+                  Por favor, selecione uma data de vencimento válida.
+                </div>
               </div>
-              <div class="col-12">
+              <div class="col-md-6">
                 <label for="app" class="form-label">Plano</label>
                 <input type="text" id="app" class="form-control" placeholder="Ex: Unitv, Lazer player" required>
+                <div class="invalid-feedback">
+                  Por favor, informe o plano.
+                </div>
               </div>
-              <div class="col-12">
+              <div class="col-md-6">
                 <label for="valor" class="form-label">Valor (R$)</label>
                 <input type="number" id="valor" class="form-control" placeholder="Ex: 26.90" step="0.01" required>
+                <div class="invalid-feedback">
+                  Por favor, informe um valor válido.
+                </div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary w-100 mt-3"><i class="fas fa-save me-2"></i>Cadastrar</button>
+            <button type="submit" class="btn btn-primary w-100 mt-3">
+              <i class="fas fa-save me-2"></i>Cadastrar
+            </button>
           </form>
         </div>
       </div>
@@ -89,10 +115,12 @@
     <section id="clientes">
       <div class="card shadow-sm border-0">
         <div class="card-body">
-          <h3 class="mb-3 text-center"><i class="fas fa-users me-2"></i>Clientes Cadastrados</h3>
+          <h3 class="mb-3 text-center">
+            <i class="fas fa-users me-2"></i>Clientes Cadastrados
+          </h3>
           <div class="table-responsive">
             <table class="table table-hover">
-              <thead>
+              <thead class="table-primary">
                 <tr>
                   <th>Nome</th>
                   <th>Vencimento</th>
@@ -104,7 +132,7 @@
                 </tr>
               </thead>
               <tbody id="listaClientes">
-                <!-- Linhas dinâmicas -->
+                <!-- Preenchido dinamicamente -->
               </tbody>
             </table>
           </div>
