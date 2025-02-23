@@ -1,118 +1,179 @@
+
 :root {
-  --cor-primaria: #007bff; /* Azul */
-  --cor-secundaria: #6c757d; /* Cinza */
-  --cor-sucesso: #28a745; /* Verde */
-  --cor-perigo: #dc3545; /* Vermelho */
-  --cor-aviso: #ffc107; /* Amarelo */
-  --cor-fundo: #f8f9fa; /* Fundo claro */
-  --cor-texto: #495057; /* Texto escuro */
+
+--cor-primaria: #0d6efd;
+--cor-secundaria: #6c757d;
+--cor-sucesso: #198754;
+--cor-perigo: #dc3545;
+--cor-aviso: #ffc107;
+--cor-fundo: #f8f9fa;
+--cor-texto: #212529;
+--transicao: all 0.3s ease;
 }
 
 body {
-  font-family: 'Georgia', serif;
-  margin: 0;
-  padding: 0;
-  background-color: var(--cor-fundo);
-  color: var(--cor-texto);
+font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+background-color: var(--cor-fundo);
+color: var(--cor-texto);
+line-height: 1.6;
 }
 
-header {
-  background-color: white;
-  color: black;
-  padding: 10px;
-  text-align: center;
-  margin-bottom: 20px;
-  border-radius: 5px;
+.navbar {
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+font-size: 1.5rem;
+font-weight: 600;
 }
 
 .container {
-  max-width: 900px;
-  margin: 30px auto;
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+max-width: 1200px;
+margin: 0 auto;
+padding: 20px;
 }
 
 .card {
-  margin-bottom: 20px;
-  border-radius: 10px;
-  transition: transform 0.3s ease;
+border: none;
+border-radius: 12px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+transition: var(--transicao);
 }
 
 .card:hover {
-  transform: translateY(-5px);
+transform: translateY(-5px);
+box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-#dataHora {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: var(--cor-texto);
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.card-body {
+padding: 1.5rem;
+}
+
+.form-control {
+border-radius: 8px;
+border: 1px solid #dee2e6;
+padding: 0.75rem;
+transition: var(--transicao);
+}
+
+.form-control:focus {
+border-color: var(--cor-primaria);
+box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
 .btn {
-  transition: background-color 0.3s ease;
+border-radius: 8px;
+padding: 0.75rem 1.5rem;
+font-weight: 600;
+transition: var(--transicao);
 }
 
-.btn:hover {
-  background-color: var(--cor-primaria);
+.btn-primary {
+background-color: var(--cor-primaria);
+border: none;
+}
+
+.btn-primary:hover {
+background-color: #0b5ed7;
+transform: translateY(-2px);
+}
+
+.table {
+border-radius: 8px;
+overflow: hidden;
 }
 
 .table th {
-  background-color: var(--cor-primaria);
-  color: white;
+background-color: var(--cor-primaria);
+color: white;
+font-weight: 600;
+border: none;
 }
 
 .table td {
-  background-color: #f9f8fa;
+vertical-align: middle;
+padding: 1rem;
 }
 
-.text-warning {
-  color: var(--cor-aviso) !important;
+.table-hover tbody tr:hover {
+background-color: rgba(13, 110, 253, 0.05);
 }
 
+.badge {
+padding: 0.5em 1em;
+font-weight: 600;
+border-radius: 20px;
+}
+
+.badge-success {
+background-color: var(--cor-sucesso);
+color: white;
+}
+
+.badge-danger {
+background-color: var(--cor-perigo);
+color: white;
+}
+
+#dataHora {
+font-size: 1.1rem;
+font-weight: 500;
+color: var(--cor-secundaria);
+margin-bottom: 1.5rem;
+}
+
+.display-6 {
+font-weight: 700;
+color: var(--cor-texto);
+}
+
+/* Animações */
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.card, .table {
+animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
-  .container {
-    padding: 10px;
-    margin: 10px auto;
-  }
+.container {
+  padding: 10px;
+}
 
-  .card {
-    margin-bottom: 10px;
-  }
+.card {
+  margin-bottom: 15px;
+}
 
-  #dataHora {
-    font-size: 1em;
-    padding: 8px;
-  }
+.table-responsive {
+  border-radius: 8px;
+  overflow-x: auto;
+}
 
-  .navbar-brand {
-    font-size: 1.2em;
-  }
+.btn {
+  padding: 0.5rem 1rem;
+}
 
-  .display-6 {
-    font-size: 1.5em;
-  }
+.display-6 {
+  font-size: 1.5rem;
+}
 
-  .btn-sm {
-    padding: 5px 10px;
-    font-size: 0.9em;
-  }
+.navbar-brand {
+  font-size: 1.2rem;
+}
+}
 
-  .table th, .table td {
-    padding: 8px;
-    font-size: 0.9em;
-  }
+/* Melhorias de Acessibilidade */
+.form-control:focus {
+outline: none;
+box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
 
-  .form-control {
-    font-size: 0.9em;
-  }
-
-  .btn {
-    font-size: 0.9em;
-  }
+/* Estilo para mensagens de validação */
+.invalid-feedback {
+font-size: 0.875rem;
+color: var(--cor-perigo);
+margin-top: 0.25rem;
 }
