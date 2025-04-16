@@ -1,5 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+   
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore-compat.js"></script>
+
+<script>
+ 
+  const firebaseConfig = {
+    apiKey: "AIzaSyAkPyMlHrkh659HMpmBAdDVKttINM4qDfA",
+    authDomain: "clientesnvtv.firebaseapp.com",
+    projectId: "clientesnvtv",
+    storageBucket: "clientesnvtv.firebasestorage.app",
+    messagingSenderId: "697815612886",
+    appId: "1:697815612886:web:2f154daf62427aa1477877"
+    
+  };
+
+  
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
